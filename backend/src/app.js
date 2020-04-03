@@ -1,5 +1,7 @@
 const express = require('express');
 
+const { errors } = require('celebrate');
+
 const cors = require('cors');
 
 const app = express();
@@ -12,11 +14,9 @@ app.use(cors());
 
 app.use(routes);
 
-app.listen(3636, () => {
-    console.log("Sempre no final da merda!")
-});
+app.use(errors());
 
-
+module.exports = app
 
 
 // app.get('/users/', (req, res) =>{
