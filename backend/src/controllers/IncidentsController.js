@@ -12,7 +12,6 @@ module.exports = {
             value,
             ong_id
         });
-
         return res.json({ id });
     },
     async index(req, res){
@@ -22,7 +21,7 @@ module.exports = {
         const [ count ] = await connection('incidents').count();
 
         const incidents = await connection('incidents')
-            .join('ongs', 'ong_id', '=', 'incidents.ong_id')
+            .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
             .limit(5)
             .offset((page - 1) * 5)
             .select([
@@ -46,12 +45,21 @@ module.exports = {
             .where("id", id)
             .select("ong_id")
             .first();
+        
+        if(!incident){
+            return res.status(401).json({error: "Incident not found, try again!"});
+        }
 
         if(id_ong !== incident.ong_id){
             return res.status(401).json({ error: "Operation not permited" });
         }
 
         await connection('incidents').where('id', id).delete();
+
+        return res.status(204).send();
+    },
+    async deleteAll(req, res){
+        await connection('incidents').delete();
 
         return res.status(204).send();
     }

@@ -29,9 +29,7 @@ export default function Incidents(){
 
         setLoading(true);
 
-        const response = await api.get('incidents', {
-            params: page 
-        });
+        const response = await api.get('incidents');
         
         setIncidents([...incidents, ...response.data]);
         setTotal(response.headers['x-total-count']);
@@ -59,13 +57,16 @@ export default function Incidents(){
             </View>
 
             <Text styles={styles.title}> Bem vindo </Text>
-            <Text styles={styles.description}> Escolha um dos casos abaixo </Text>
+            {
+            total > 0 ? <Text styles={styles.description}> Escolha um dos casos abaixo </Text>
+                : <Text styles={styles.description}> Nenhum caso cadastrado ainda </Text>
+            }
 
             <FlatList 
                 data = {incidents}
                 style={styles.incidentList}
                 keyExtractor = {(incident) => String(incident.id)}
-                showsHorizontalScrollIndicator = {false}
+                showsVerticalScrollIndicator={false}
                 onEndReached={loadIncidents}
                 onEndReachedThreshold={0.2}
                 renderItem = {({ item: incident }) => (
@@ -83,14 +84,13 @@ export default function Incidents(){
                                     currency: 'BRL'                                
                                 }).format(incident.value) }
                         </Text>
-
                         
                         <TouchableOpacity
                             style={styles.detailsButton}
                             onPress={() => navigationToDetail(incident)}
                         >
-                            <Text styles={styles.detailsButtonText}>Ver mais detalhes</Text>
-                            <Feather name="arrow-right" size={16} color="#E02041"/>
+                            <Text style={styles.detailsButtonText}>Ver mais detalhes</Text>
+                            <Feather name="arrow-right" size={20} color="#E02041"/>
                         </TouchableOpacity>
                     </View>
                 )}

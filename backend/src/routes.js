@@ -8,7 +8,11 @@ const sectionController = require('./controllers/SectionController');
 
 const routes = express.Router();
 
-routes.post('/section', sectionController.create);
+routes.post('/section', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        id: Joi.string().required()
+    })
+}), sectionController.create);
 
 routes.get('/ongs', ongController.index);
 
@@ -28,7 +32,13 @@ routes.get('/profile', celebrate({
     }).unknown(),
 }), profileController.index);
  
-routes.post('/incidents', incidentController.create);
+routes.post('/incidents', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        title: Joi.string().required(),
+        description: Joi.string().required(),
+        value: Joi.number(),
+    })
+}), incidentController.create);
 
 routes.get('/incidents', celebrate({
     [Segments.QUERY]: Joi.object().keys({
@@ -41,5 +51,7 @@ routes.delete('/incidents/:id', celebrate({
         id: Joi.number().required(),
     })
 }), incidentController.delete);
+
+routes.delete('/incidents/', incidentController.deleteAll);
 
 module.exports = routes;

@@ -7,10 +7,23 @@ module.exports = {
       filename: './src/database/db.sqlite'
     },
     migrations: {
-      directory: './src/database/migrations',
+      directory: './src/database/migrations'
     },
-    useNullAsDefault: true
   },
+  // development: {
+  //   client: 'mysql',
+  //   connection: {
+  //     host : '127.0.0.1',
+  //     user : 'root',
+  //     password : '1234',
+  //     database : 'db_seja_heroi',
+  //     insecureAuth : true
+  //   },
+  //   migrations: {
+  //     directory: './src/database/migrations',
+  //   },
+  //   useNullAsDefault: true
+  // },
 
   test: {
     client: 'sqlite3',
